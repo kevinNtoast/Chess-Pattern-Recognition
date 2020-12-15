@@ -15,12 +15,12 @@ A total of 81081 sample board states one move before checkmates were obtained an
 |:--:| 
 |![FEN File](/images/fen.png)|
 |![Board img](/images/board.png)|
-|Figure 1. Top- An example of a chess game in PGN format. Bottom- An example of a FEN string of a single board state and its board layout|
+|Figure 1. (a) An example of a chess game in PGN format. (b) An example of a FEN string of a single board state and (c) its board layout|
    
 ### Pre-Processing of data  
 FICS data was obtained in Portable Game Notation (PGN) format, which contains information of the players involved in the game as well as a string that signifies each move that was made in the game. The generated dataset was obtained in Forsyth-Edwards Notation (FEN) format, a string that signifies the layout of the current board state. (Figure 1) Data in the PGN format was translated to FEN format. The FEN format data was then processed into 25 by 8 by 8 tensors which were then used as inputs in the neural network.  
   
-The data was one-hot encoded and represented in 25 channels, in order to encode enough data for possible moves of the pieces. The first layer signified the turn side,  1 for white and 0 for black. The next 12 channels described the positions of each piece. The remaining 12 channels described the positions of legal moves for each piece. One-hot encoding was the best representation to be used in this dataset due to the requirement of representing categorical information of pieces, and using numbers for each piece would lead to greater importance depending on how the pieces were translated into numbers. Through one-hot encoding, each piece is valued the same, and the only differentiation between them is the channel they are assigned to.(Vikström, 2019)  
+The data was one-hot encoded and represented in 25 channels, in order to encode enough data for possible moves of the pieces. The first layer signified the turn side,  1 for white and 0 for black. The next 12 channels described the positions of each piece. The remaining 12 channels described the positions of legal moves for each piece. One-hot encoding was the best representation to be used in this dataset due to the requirement of representing categorical information of pieces, and using numbers for each piece would lead to greater importance depending on how the pieces were translated into numbers. Through one-hot encoding, each piece is valued the same, and the only differentiation between them is the channel they are assigned to.(VikstrÃ¶m, 2019)  
   
 ### Network Training and Testing  
 The goal of the network was to classify the best next move, or the move that leads to a checkmate on the current board. The basic architecture follows that of many image processing convolutional neural network, but with different tensor sizes to accommodate our data input sizes. In order to prevent over-fitting, dropout layers of probabilities 25% and 50% were defined after each fully connected layer, and in order to compare learning rate, batch normalization layers were defined after each convolutional layer. The Adam optimizer was also used to minimize the cost functions. Pooling layers were not used in our neural network because we wanted to preserve as much of the features as possible. (Oshri and Khandwala, 2018)
@@ -34,13 +34,13 @@ The moves produced by the output of the network were validated against the best 
 
 |![loss](/images/loss.png)|
 |:--:| 
-|Figure 3. The loss of the neural network over time, with training accuracy in blue and test accuracy in red.|
+|Figure 3. The loss of the neural network over time, with training loss in blue and test loss in red.|
 
 |![acc2](/images/acc2.png)|
 |:--:| 
 |Figure 4. The accuracy of the neural network over time with batch normalization, with training accuracy in blue and test accuracy in red.|
   
-The neural networks were run over 100 epochs. The network training was done through a CPU due to the unavailability of a GPU. The results showed that the network was able to attain an accuracy above 98%, and a training accuracy of 81%. In order to compare learning rates with and without batch normalization, we included the function between each convolutional layer. With batch normalization, training accuracy approached near 99.98% and a training accuracy of 90%. An ANOVA analysis of the performance of the two conditions over the 100 epochs it was trained showed that there was a significant difference in performance between the neural netowrk trained with batch normalization and the neural network trained without. (p < 0.001) This analysis was done as an exploratory measure, but the inclusion of batch normalization has clear advantages, not only in the speed of learning, but also arriving at a higher accuracy rate than without batch normalization.   
+The neural networks were run over 100 epochs. The network training was done through a CPU due to the unavailability of a GPU. The results showed that the network was able to attain an accuracy above 98%, and a training accuracy of 81%. In order to compare learning rates with and without batch normalization, we included the function between each convolutional layer. With batch normalization, training accuracy approached near 99.98% and a training accuracy of 90%. An ANOVA analysis of the performance of the two conditions over the 100 epochs it was trained showed that there was a significant difference in performance between the neural netowrk trained with batch normalization and the neural network trained without. (p < 0.001) This analysis was done as an exploratory measure, but nonetheless showed that the inclusion of batch normalization has clear advantages, not only in the speed of learning, but also arriving at a higher accuracy rate than without batch normalization.   
   
 |![pieceVcount](/images/pieceVcount.png)|
 |:--:| 
@@ -69,4 +69,4 @@ Oshri, B., & Khandwala, N. (2016). Predicting moves in chess using convolutional
   
 Silver, D., Hubert, T., Schrittwieser, J., Antonoglou, I., Lai, M., Guez, A., ... & Lillicrap, T. (2018). A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play. Science, 362(6419), 1140-1144.  
   
-Vikström, J. (2019). Training a Convolutional Neural Network to Evaluate Chess Positions.  
+VikstrÃ¶m, J. (2019). Training a Convolutional Neural Network to Evaluate Chess Positions.  
